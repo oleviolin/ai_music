@@ -1,0 +1,7 @@
+#!/bin/bash
+cd ~/ai_music || return
+source venv/bin/activate
+cd player || return
+npm start
+
+
