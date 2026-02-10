@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Spillefolk Alignment Workbench</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+    <script src="https://unpkg.com/@tonejs/midi"></script>
+    <style>
+        body { font-family: sans-serif; background: #f0f0f0; padding: 20px; user-select: none; }
+        
+        /* Layout */
+        .controls { background: white; padding: 15px; border-radius: 8px; display: flex; gap: 20px; align-items: center; margin-bottom: 20px; flex-wrap: wrap; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .mixer { background: #e9ecef; padding: 8px 15px; border-radius: 5px; display: flex; gap: 15px; align-items: center; border: 1px solid #ccc; }
+        
+        /* Interactive Elements */
+        .slider-group { display: flex; flex-direction: column; }
+        label { font-size: 11px; font-weight: bold; color: #666; text-transform: uppercase; margin-bottom: 4px; }
+        select { padding: 6px; border-radius: 4px; border: 1px solid #ccc; }
+        button { padding: 8px 16px; cursor: pointer; background: #007bff; color: white; border: none; border-radius: 4px; font-weight: bold; transition: background 0.2s; }
+        button:hover { background: #0056b3; }
+        button#btnStop { background: #dc3545; }
+        button#btnStop:hover { background: #a71d2a; }
+
+        /* Seek Bar */
+        #seekContainer { width: 100%; margin-bottom: 5px; position: relative; height: 20px; }
+        #seekBar { width: 100%; cursor: pointer; margin: 0; }
+
+        /* Visualizer Area */
+        .visualizer { 
+            background: white; padding: 0; border-radius: 8px; 
+            position: relative; height: 400px; overflow: hidden; 
+            border: 1px solid #ccc; cursor: crosshair; 
+        }
+        
+        /* Layers (Z-Index is crucial) */
+        #waveCanvas { position: absolute; top: 0; left: 0; z-index: 1; opacity: 0.5; pointer-events: none; }
+        #onsetCanvas { position: absolute; top: 0; left: 0; z-index: 2; pointer-events: none; } /* For Phase 3a lines */
+        #piano-roll { position: relative; z-index: 5; height: 100%; width: 100%; } /* Clickable layer */
+        
+        /* Graph Elements */
+        #playhead { position: absolute; top: 0; bottom: 0; width: 2px; background: #ff0000; z-index: 30; left: 0; pointer-events: none; }
+        .note { 
+            position: absolute; height: 6px; background: #4CAF50; 
+            border-radius: 2px; opacity: 0.8; border: 1px solid #388E3C; 
+            box-sizing: border-box; pointer-events: none; /* Let clicks pass to container if needed, or handle note clicks */
+        }
+        
+        /* Loop Markers */
+        .marker { position: absolute; top: 0; bottom: 0; width: 2px; z-index: 20; pointer-events: none; display: none; }
+        #markerA { background: #00ff00; border-left: 2px solid lime; }
+        #markerB { background: #ff0000; border-right: 2px solid red; }
+        #loopRegion { position: absolute; top: 0; bottom: 0; background: rgba(0, 255, 0, 0.1); z-index: 4; display: none; pointer-events: none;}
+
+        /* Status & Time */
+        .status-bar { margin-left: auto; text-align: right; }
+        #timeDisplay { font-family: monospace; font-size: 18px; font-weight: bold; color: #333; }
+        #status { font-size: 12px; color: #666; margin-top: 2px; }
+    </style>
+</head>
+<body>
+
+    <div class="controls">
+        <div class="slider-group">
+            <label>Category</label>
+            <select id="catSelect">
+                <option value="first">First (Synth)</option>
+                <option value="one_kor">Orchestra</option>
+                <option value="one_kor_sgl">Solo</option>
+            </select>
+        </div>
+        <div class="slider-group">
+            <label>Melody (<span id="count">0</span>)</label>
+            <select id="melodySelect" style="min-width: 200px;"></select>
+        </div>
+        
+        <button id="btnPlay">▶ Play (P)</button>
+        <button id="btnStop">■ Stop (S)</button>
+        
+        <div class="mixer">
+            <div class="slider-group" style="flex-direction: row; gap: 8px; align-items: center;">
+                <input type="checkbox" id="chkAudio" checked>
+                <label style="margin:0; cursor:pointer;" for="chkAudio">Audio (O)</label>
+            </div>
+            <div class="slider-group" style="flex-direction: row; gap: 8px; align-items: center;">
+                <input type="checkbox" id="chkMidi" checked>
+                <label style="margin:0; cursor:pointer;" for="chkMidi">Midi (M)</label>
+            </div>
+        </div>
+
+        <div class="slider-group">
+            <label title="Double click to reset">Offset (s): <span id="offsetVal">0.0</span></label>
+            <input type="range" id="offsetRange" min="-6" max="5" step="0.05" value="0">
+        </div>
+
+        <div class="slider-group">
+            <label title="Double click to reset">Speed: <span id="stretchVal">1.0</span></label>
+            <input type="range" id="stretchRange" min="0.8" max="1.2" step="0.005" value="1.0">
+        </div>
+        
+        <div class="status-bar">
+            <div id="timeDisplay">0:00</div>
+            <div id="status">Ready</div>
+        </div>
+    </div>
+
+    <div id="seekContainer">
+        <input type="range" id="seekBar" value="0" min="0" step="0.1" disabled>
+    </div>
+
+    <div class="visualizer" id="timelineContainer">
+        <div id="playhead"></div>
+        <div id="markerA" class="marker"></div>
+        <div id="markerB" class="marker"></div>
+        <div id="loopRegion"></div>
+        
+        <canvas id="onsetCanvas" height="400"></canvas>
+        <canvas id="waveCanvas" height="400"></canvas>
+        
+        <div id="piano-roll"></div>
+    </div>
+
+    <script>
+        // --- CONFIG ---
+        const VISUAL_HEIGHT = 400; // Match CSS
+
+        // --- STATE ---
+        let currentMidi = null;
+        let player = null;
+        let synth = null;
+        let duration = 0;
+        
+        let midiOffset = 0.0;
+        let midiStretch = 1.0;
+        let loopA = 0;
+        let loopB = 0;
+
+        // UI Cache
+        const statusDiv = document.getElementById('status');
+        const seekBar = document.getElementById('seekBar');
+        const playhead = document.getElementById('playhead');
+
+        // --- INIT ---
+        async function init() {
+            // Audio Engine
+            synth = new Tone.PolySynth(Tone.Synth, {
+                volume: -6, 
+                envelope: { attack: 0.02, decay: 0.1, sustain: 0.3, release: 1 }
+            }).toDestination();
+
+            // Event Listeners
+            document.getElementById('catSelect').onchange = updateSongList;
+            document.getElementById('melodySelect').onchange = loadSong;
+
+            // Buttons
+            document.getElementById('btnPlay').onclick = async () => {
+                await Tone.start(); 
+                togglePlay();
+            };
+            document.getElementById('btnStop').onclick = () => {
+                restartFromBeginning();
+            };
+
+            // Mixer
+            document.getElementById('chkAudio').onchange = (e) => {
+                if(player) player.mute = !e.target.checked;
+            };
+            document.getElementById('chkMidi').onchange = (e) => {
+                synth.volume.value = e.target.checked ? -6 : -Infinity;
+            };
+
+            // Double Click to Reset Sliders
+            document.getElementById('offsetRange').ondblclick = (e) => {
+                e.target.value = 0;
+                e.target.onchange(); // Trigger update
+            };
+            document.getElementById('stretchRange').ondblclick = (e) => {
+                e.target.value = 1.0;
+                e.target.onchange();
+            };
+
+            // Seek Bar
+            seekBar.oninput = () => updatePlayheadVisuals(parseFloat(seekBar.value));
+            seekBar.onchange = () => {
+                Tone.Transport.seconds = parseFloat(seekBar.value);
+            };
+
+            // Alignment Logic
+            const updateAlign = () => {
+                 midiOffset = parseFloat(document.getElementById('offsetRange').value);
+                 midiStretch = parseFloat(document.getElementById('stretchRange').value);
+                 document.getElementById('offsetVal').innerText = midiOffset.toFixed(2);
+                 document.getElementById('stretchVal').innerText = midiStretch.toFixed(3);
+                 // Redraw visuals
+                 drawMidi();
+                 drawOnsets(); 
+            };
+            const applyAlign = () => { 
+                updateAlign(); 
+                scheduleMidi(); // Re-schedule audio
+            };
+            
+            // Input = Visual update only (fast), Change = Audio update (slow)
+            document.getElementById('offsetRange').oninput = updateAlign;
+            document.getElementById('stretchRange').oninput = updateAlign;
+            document.getElementById('offsetRange').onchange = applyAlign;
+            document.getElementById('stretchRange').onchange = applyAlign;
+
+            // Phase 4b: Click Piano Roll to Jump
+            document.getElementById('piano-roll').addEventListener('click', (e) => {
+                const rect = e.target.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const width = rect.width;
+                const safeDur = duration || 30;
+                
+                // Calculate time from X position
+                const clickedTime = (x / width) * safeDur;
+                
+                // Jump
+                Tone.Transport.seconds = Math.max(0, clickedTime);
+                statusDiv.innerText = `Jumped to ${clickedTime.toFixed(2)}s`;
+                updatePlayheadVisuals(clickedTime);
+            });
+
+            await updateSongList();
+            requestAnimationFrame(animateLoop);
+        }
+
+        // --- KEYBOARD HANDLING ---
+        window.addEventListener('keydown', async (e) => {
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
+            if (Tone.context.state !== 'running') await Tone.start();
+
+            const key = e.key.toLowerCase();
+            const now = Tone.Transport.seconds;
+
+            if(key.startsWith("arrow")) e.preventDefault();
+
+            switch (key) {
+                case 'p': case ' ': togglePlay(); break;
+                case 's': restartFromBeginning(); break;
+                case 'o': document.getElementById('chkAudio').click(); break;
+                case 'm': document.getElementById('chkMidi').click(); break;
+                
+                case 'a': setLoopA(now); break;
+                case 'b': setLoopB(now); break;
+                case 'h': clearLoop(); break;
+                case 'f': 
+                    Tone.Transport.loop = !Tone.Transport.loop;
+                    drawLoop();
+                    break;
+                case 'c': Tone.Transport.seconds = Math.max(0, loopA - 2); break;
+                case 'd': Tone.Transport.seconds = Tone.Transport.loop ? Math.max(0, loopB - 2) : Math.max(0, duration - 5); break;
+                case 'q': Tone.Transport.seconds = Math.max(0, duration - 5); break;
+            }                    
+
+                case 'arrowleft': Tone.Transport.seconds = Math.max(0, now - 2); break;
+                case 'arrowright': Tone.Transport.seconds = Math.min(duration, now + 2); break;
+
+        });
+
+        // --- LOGIC ---
+        async function togglePlay() {
+            if (Tone.Transport.state === "started") {
+                Tone.Transport.pause();
+                document.getElementById('btnPlay').innerText = "▶ Play (P)";
+            } else {
+               
+                setTimeout(toneStart,5)
+                setTimeout(tonePause,20)
+                setTimeout(toneStart,40)
+                
+                document.getElementById('btnPlay').innerText = "⏸ Pause (P)";
+            }
+        }
+        function toneStart(){
+            Tone.Transport.start();
+        }
+        function tonePause(){
+            Tone.Transport.pause();
+        }
+
+        function restartFromBeginning() {
+            Tone.Transport.stop();
+            document.getElementById('btnPlay').innerText = "▶ Play (P)";
+            Tone.Transport.seconds = Tone.Transport.loop ? loopA : 0;
+            updatePlayheadVisuals(Tone.Transport.seconds);
+        }
+
+        async function updateSongList() {
+            restartFromBeginning();
+            const category = document.getElementById('catSelect').value;
+            try {
+                const res = await fetch(`/api/melodies/${category}`);
+                const melodies = await res.json();
+                const select = document.getElementById('melodySelect');
+                select.innerHTML = '';
+                document.getElementById('count').innerText = melodies.length;
+                
+                if(melodies.length === 0) select.add(new Option("(No files)", ""));
+                else melodies.sort().forEach(m => select.add(new Option(m, m)));
+                
+                select.selectedIndex = 0;
+                loadSong();
+            } catch(e) { console.error(e); }
+        }
+
+        async function loadSong() {
+            Tone.Transport.stop(); 
+            Tone.Transport.cancel();
+            
+            const key = document.getElementById('melodySelect').value;
+            const cat = document.getElementById('catSelect').value;
+            if(!key || key.startsWith("(")) return;
+
+            statusDiv.innerText = "Loading...";
+            seekBar.disabled = true;
+
+            try {
+                if(player) player.dispose();
+
+                // 1. Audio & Analysis
+                let autoOffset = 0;
+                try {
+                    const jsonRes = await fetch(`/api/analysis/${cat}/${key}`);
+                    if (jsonRes.ok) {
+                        const data = await jsonRes.json();
+                        drawWaveform(data);
+                        if (data.auto_offset) autoOffset = data.auto_offset;
+                    } else {
+                         clearCanvases();
+                    }
+                } catch(e) { clearCanvases(); }
+
+                const audioUrl = `/audio/${cat}/wav/${key}.wav`;
+                player = new Tone.Player(audioUrl).toDestination();
+                player.sync().start(0);
+                await player.load(audioUrl);
+                
+                duration = player.buffer.duration;
+                seekBar.max = duration;
+                seekBar.disabled = false;
+                player.mute = !document.getElementById('chkAudio').checked;
+
+                // 2. MIDI
+                const midiRes = await fetch(`/midi/${key}.mid`);
+                const buf = await midiRes.arrayBuffer();
+                currentMidi = new Midi(buf);
+                
+                // 3. Apply Offset
+                midiOffset = autoOffset;
+                document.getElementById('offsetRange').value = midiOffset;
+                document.getElementById('offsetVal').innerText = midiOffset.toFixed(2);
+                
+                clearLoop();
+                scheduleMidi();
+                drawMidi();
+                drawOnsets(); // Draw phase 3a lines
+                
+                statusDiv.innerText = "Ready";
+
+            } catch (e) {
+                console.error(e);
+                statusDiv.innerText = "Error: " + e.message;
+            }
+        }
+
+        function scheduleMidi() {
+            Tone.Transport.cancel();
+            if (!currentMidi) return;
+
+            let firstNoteTime = getFirstNoteTime();
+
+            currentMidi.tracks.forEach(track => {
+                track.notes.forEach(note => {
+                    let startTime = ((note.time - firstNoteTime) * midiStretch) + midiOffset;
+                    let dur = note.duration * midiStretch;
+                    
+                    if (startTime >= 0) {
+                        Tone.Transport.schedule((time) => {
+                            if (document.getElementById('chkMidi').checked) {
+                                synth.triggerAttackRelease(note.name, dur, time, note.velocity);
+                            }
+                        }, startTime);
+                    }
+                });
+            });
+        }
+
+        function getFirstNoteTime() {
+            let t = Infinity;
+            if(!currentMidi) return 0;
+            currentMidi.tracks.forEach(track => {
+                track.notes.forEach(note => { if(note.time < t) t = note.time; });
+            });
+            return (t === Infinity) ? 0 : t;
+        }
+
+        // --- DRAWING ---
+        function clearCanvases() {
+            const ctx1 = document.getElementById('waveCanvas').getContext('2d');
+            const ctx2 = document.getElementById('onsetCanvas').getContext('2d');
+            ctx1.clearRect(0,0, ctx1.canvas.width, ctx1.canvas.height);
+            ctx2.clearRect(0,0, ctx2.canvas.width, ctx2.canvas.height);
+        }
+
+        function drawWaveform(data) {
+            const cvs = document.getElementById('waveCanvas');
+            const ctx = cvs.getContext('2d');
+            resizeCanvas(cvs);
+            
+            const w = cvs.width; 
+            const h = cvs.height;
+            const wave = data.waveform;
+            
+            ctx.clearRect(0,0,w,h);
+            ctx.fillStyle = "#999"; 
+            
+            const barWidth = w / wave.length;
+            for (let i = 0; i < wave.length; i++) {
+                // Draw mirrored
+                const height = wave[i] * h * 0.9;
+                ctx.fillRect(i * barWidth, (h - height)/2, Math.max(1, barWidth), height);
+            }
+        }
+
+        // Phase 3a: Draw Vertical Lines for Note Onsets
+        function drawOnsets() {
+            const cvs = document.getElementById('onsetCanvas');
+            const ctx = cvs.getContext('2d');
+            resizeCanvas(cvs);
+            
+            ctx.clearRect(0,0,cvs.width, cvs.height);
+            if (!currentMidi) return;
+
+            const safeDur = duration || 30;
+            const scaleX = cvs.width / safeDur;
+            const firstNoteTime = getFirstNoteTime();
+
+            ctx.beginPath();
+            ctx.strokeStyle = "rgba(255, 0, 0, 0.5)"; // Thin red line
+            ctx.lineWidth = 1;
+
+            currentMidi.tracks.forEach(track => {
+                track.notes.forEach(note => {
+                    let startTime = ((note.time - firstNoteTime) * midiStretch) + midiOffset;
+                    if (startTime >= 0 && startTime < safeDur) {
+                        const x = Math.floor(startTime * scaleX) + 0.5; // Snap to pixel
+                        ctx.moveTo(x, 0);
+                        ctx.lineTo(x, cvs.height);
+                    }
+                });
+            });
+            ctx.stroke();
+        }
+
+        function drawMidi() {
+            const container = document.getElementById('piano-roll');
+            container.innerHTML = ''; // Clear notes
+            
+            if (!currentMidi) return;
+            const safeDur = duration || 30;
+            const width = container.clientWidth;
+            const scaleX = width / safeDur;
+            const firstNoteTime = getFirstNoteTime();
+
+            currentMidi.tracks.forEach(track => {
+                track.notes.forEach(note => {
+                    let startTime = ((note.time - firstNoteTime) * midiStretch) + midiOffset;
+                    let dur = note.duration * midiStretch;
+                    
+                    if (startTime < safeDur && (startTime + dur) > 0) {
+                        const el = document.createElement('div');
+                        el.className = 'note';
+                        el.style.left = (startTime * scaleX) + 'px';
+                        el.style.width = Math.max(2, (dur * scaleX)) + 'px';
+                        
+                        const topPercent = 100 - ((note.midi - 45) / 50 * 100);
+                        el.style.top = Math.max(0, Math.min(95, topPercent)) + '%';
+                        
+                        container.appendChild(el);
+                    }
+                });
+            });
+        }
+
+        function resizeCanvas(c) {
+            const rect = c.parentElement.getBoundingClientRect();
+            c.width = rect.width;
+            c.height = rect.height; // Use full container height
+        }
+        
+        // Loop Markers
+        function setLoopA(time) { loopA = Math.max(0, time); Tone.Transport.loopStart = loopA; drawLoop(); }
+        function setLoopB(time) { 
+            if (time <= loopA) return;
+            loopB = time; Tone.Transport.loopEnd = loopB; 
+            Tone.Transport.loop = true; 
+            if(Tone.Transport.state !== 'started') togglePlay();
+            drawLoop(); 
+        }
+        function clearLoop() { 
+            Tone.Transport.loop = false; loopA = 0; loopB = 0; Tone.Transport.loopStart = 0; Tone.Transport.loopEnd = duration; 
+            drawLoop(); 
+        }
+        
+        function drawLoop() {
+            const width = document.getElementById('timelineContainer').clientWidth;
+            const safeDur = duration || 30;
+            const px = width / safeDur;
+            
+            const mA = document.getElementById('markerA');
+            const mB = document.getElementById('markerB');
+            const reg = document.getElementById('loopRegion');
+
+            if (loopA > 0 || Tone.Transport.loop) {
+                mA.style.display = 'block'; mA.style.left = (loopA * px) + 'px';
+            } else mA.style.display = 'none';
+
+            if (loopB > 0 && Tone.Transport.loop) {
+                mB.style.display = 'block'; mB.style.left = (loopB * px) + 'px';
+                reg.style.display = 'block'; reg.style.left = (loopA * px) + 'px'; reg.style.width = ((loopB - loopA) * px) + 'px';
+            } else {
+                mB.style.display = 'none'; reg.style.display = 'none';
+            }
+        }
+
+        function animateLoop() {
+            requestAnimationFrame(animateLoop);
+            if (Tone.Transport.state !== 'started') return;
+            const now = Tone.Transport.seconds;
+            seekBar.value = now;
+            updatePlayheadVisuals(now);
+        }
+
+        function updatePlayheadVisuals(time) {
+            const width = document.getElementById('timelineContainer').clientWidth;
+            const safeDur = duration || 30;
+            const px = (time / safeDur) * width;
+            playhead.style.left = px + "px";
+            
+            const m = Math.floor(time / 60);
+            const s = Math.floor(time % 60);
+            document.getElementById('timeDisplay').innerText = `${m}:${s.toString().padStart(2, '0')}`;
+        }
+
+        init();
+    </script>
+</body>
+</html>

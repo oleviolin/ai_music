@@ -1,0 +1,652 @@
+{
+  "fa-avildans": {
+    "offset": 0.478,
+    "speed": 1.019,
+    "timestamp": "2026-02-01T18:59:25.272Z"
+  },
+  "fa-kirstensbrudestyk": {
+    "offset": 0.702,
+    "speed": 1.002,
+    "timestamp": "2026-02-01T19:05:19.279Z"
+  },
+  "fa-kirstine": {
+    "offset": 0.377,
+    "speed": 1.047,
+    "timestamp": "2026-02-01T19:07:09.895Z"
+  },
+  "fa-mathis": {
+    "offset": 0.247,
+    "speed": 0.958,
+    "timestamp": "2026-02-01T19:09:22.917Z"
+  },
+  "fa-nzzzrvin": {
+    "offset": 0.023,
+    "speed": 0.989,
+    "timestamp": "2026-02-01T19:11:16.025Z"
+  },
+  "fa-stam": {
+    "offset": 0.418,
+    "speed": 1.286,
+    "timestamp": "2026-02-01T19:39:27.947Z"
+  },
+  "ha-mzzllevzzzng": {
+    "offset": 0.118,
+    "speed": 1.003,
+    "timestamp": "2026-02-01T20:42:10.482Z"
+  },
+  "ha-turinge": {
+    "offset": 0.182,
+    "speed": 0.949,
+    "timestamp": "2026-02-01T20:43:42.650Z"
+  },
+  "kr-ida": {
+    "offset": 0.118,
+    "speed": 0.705,
+    "timestamp": "2026-02-01T20:45:26.038Z"
+  },
+  "kr-jzzdemor": {
+    "offset": 0.118,
+    "speed": 0.947,
+    "timestamp": "2026-02-01T20:47:03.035Z"
+  },
+  "kr-muntre": {
+    "offset": 0.051,
+    "speed": 1.253,
+    "timestamp": "2026-02-02T08:26:29.843Z"
+  },
+  "mg-brudjzmt": {
+    "offset": 0.928,
+    "speed": 0.928,
+    "timestamp": "2026-02-02T08:30:15.442Z"
+  },
+  "mg-skommar": {
+    "offset": 0,
+    "speed": 0.999,
+    "timestamp": "2026-02-02T08:33:46.859Z"
+  },
+  "mg-zppelbo": {
+    "offset": 0.12473968403423896,
+    "speed": 1.035,
+    "timestamp": "2026-02-02T08:37:03.923Z"
+  },
+  "mn-allagossar": {
+    "offset": 0.481,
+    "speed": 1.028,
+    "timestamp": "2026-02-02T08:41:36.489Z"
+  },
+  "mn-enninger": {
+    "offset": 1.911,
+    "speed": 1.124,
+    "timestamp": "2026-02-02T08:46:23.211Z"
+  },
+  "pk-blzding": {
+    "offset": 0.749,
+    "speed": 1.049,
+    "timestamp": "2026-02-02T08:47:49.459Z"
+  },
+  "pk-christina70": {
+    "offset": 0.856,
+    "speed": 1.161,
+    "timestamp": "2026-02-02T08:55:29.203Z"
+  },
+  "pk-forkertvestenom": {
+    "offset": 0.571,
+    "speed": 1.002,
+    "timestamp": "2026-02-02T08:59:24.066Z"
+  },
+  "pk-jeppescykel": {
+    "offset": 0,
+    "speed": 1.102,
+    "timestamp": "2026-02-02T09:21:27.479Z"
+  },
+  "pk-ydre": {
+    "offset": 0.66,
+    "speed": 0.95,
+    "timestamp": "2026-02-02T09:28:30.944Z"
+  },
+  "po-60zzzrs": {
+    "offset": 0.889,
+    "speed": 1.149,
+    "timestamp": "2026-02-02T09:31:01.265Z"
+  },
+  "po-allakollor": {
+    "offset": 0.126,
+    "speed": 0.945,
+    "timestamp": "2026-02-02T09:33:39.532Z"
+  },
+  "po-andrahalvan": {
+    "offset": 0,
+    "speed": 0.932,
+    "timestamp": "2026-02-02T09:35:12.315Z"
+  },
+  "po-annegretesoren": {
+    "offset": 0.213,
+    "speed": 1.18,
+    "timestamp": "2026-02-02T09:57:52.279Z"
+  },
+  "po-annettejensbr": {
+    "offset": 0.392,
+    "speed": 1.167,
+    "timestamp": "2026-02-02T09:59:41.582Z"
+  },
+  "po-arnemiklabr": {
+    "offset": 0.749,
+    "speed": 1.04,
+    "timestamp": "2026-02-02T10:03:05.337Z"
+  },
+  "po-backlinaren": {
+    "offset": 0.481,
+    "speed": 1.03,
+    "timestamp": "2026-02-02T10:06:00.280Z"
+  },
+  "po-bingsjzzblzzzbok": {
+    "offset": 0,
+    "speed": 1.158,
+    "timestamp": "2026-02-02T16:02:34.049Z"
+  },
+  "po-blecko1": {
+    "offset": 0,
+    "speed": 0.88,
+    "timestamp": "2026-02-02T16:04:37.693Z"
+  },
+  "po-bronzz": {
+    "offset": 0,
+    "speed": 1.03,
+    "timestamp": "2026-02-02T16:05:31.884Z"
+  },
+  "po-brzndjon": {
+    "offset": 0,
+    "speed": 1.007,
+    "timestamp": "2026-02-02T16:23:48.141Z"
+  },
+  "po-brzndjonp": {
+    "offset": 0.977,
+    "speed": 0.823,
+    "timestamp": "2026-02-02T16:26:12.203Z"
+  },
+  "po-donat": {
+    "offset": 0.392,
+    "speed": 1.087,
+    "timestamp": "2026-02-02T16:28:16.439Z"
+  },
+  "po-drzngjerkig": {
+    "offset": 0.571,
+    "speed": 1.052,
+    "timestamp": "2026-02-02T16:30:33.491Z"
+  },
+  "po-eda1": {
+    "offset": 0.124,
+    "speed": 0.948,
+    "timestamp": "2026-02-02T16:32:31.141Z"
+  },
+  "po-elverum": {
+    "offset": 0.66,
+    "speed": 1.236,
+    "timestamp": "2026-02-02T16:35:10.165Z"
+  },
+  "po-enkronas": {
+    "offset": 0,
+    "speed": 0.981,
+    "timestamp": "2026-02-02T16:36:41.975Z"
+  },
+  "po-ensuptill": {
+    "offset": 1.018,
+    "speed": 1.01,
+    "timestamp": "2026-02-02T16:38:56.993Z"
+  },
+  "po-far90": {
+    "offset": 0.481,
+    "speed": 1.012,
+    "timestamp": "2026-02-02T16:40:30.647Z"
+  },
+  "po-farmorsbrud": {
+    "offset": 0.957,
+    "speed": 0.987,
+    "timestamp": "2026-02-02T16:44:08.944Z"
+  },
+  "po-fzzrstahalvan": {
+    "offset": 0.571,
+    "speed": 0.916,
+    "timestamp": "2026-02-02T16:46:22.355Z"
+  },
+  "po-ganders1": {
+    "offset": 0,
+    "speed": 1.124,
+    "timestamp": "2026-02-02T21:12:10.857Z"
+  },
+  "po-gelotte": {
+    "offset": 0.71,
+    "speed": 1.171,
+    "timestamp": "2026-02-03T17:21:51.256Z"
+  },
+  "po-grivmomos": {
+    "offset": 0,
+    "speed": 1.006,
+    "timestamp": "2026-02-03T05:36:46.220Z"
+  },
+  "po-gulliserk": {
+    "offset": 0.67,
+    "speed": 0.998,
+    "timestamp": "2026-02-03T05:37:58.623Z"
+  },
+  "po-hambreus": {
+    "offset": 0,
+    "speed": 0.995,
+    "timestamp": "2026-02-03T05:39:05.657Z"
+  },
+  "po-hedinig": {
+    "offset": 0,
+    "speed": 0.926,
+    "timestamp": "2026-02-03T05:39:38.505Z"
+  },
+  "po-herrejebrud": {
+    "offset": 0.11,
+    "speed": 0.96,
+    "timestamp": "2026-02-03T05:46:28.113Z"
+  },
+  "po-horrepolska": {
+    "offset": 0.3,
+    "speed": 0.937,
+    "timestamp": "2026-02-03T05:48:31.232Z"
+  },
+  "po-hulszz": {
+    "offset": 0,
+    "speed": 0.977,
+    "timestamp": "2026-02-03T17:26:40.658Z"
+  },
+  "po-hzzzllberg": {
+    "offset": 0.4,
+    "speed": 1.06,
+    "timestamp": "2026-02-03T17:28:08.841Z"
+  },
+  "po-indusbacken": {
+    "offset": 0.22,
+    "speed": 0.898,
+    "timestamp": "2026-02-03T17:38:44.392Z"
+  },
+  "po-jannm": {
+    "offset": 0.61,
+    "speed": 1.057,
+    "timestamp": "2026-02-03T17:40:46.915Z"
+  },
+  "po-janor": {
+    "offset": 0.53,
+    "speed": 0.947,
+    "timestamp": "2026-02-03T17:45:00.433Z"
+  },
+  "po-julottan": {
+    "offset": 0.39,
+    "speed": 0.92,
+    "timestamp": "2026-02-03T18:29:37.970Z"
+  },
+  "po-jzmtex": {
+    "offset": 0.11,
+    "speed": 0.97,
+    "timestamp": "2026-02-03T18:31:23.387Z"
+  },
+  "po-kallakzzzrar": {
+    "offset": 0.3,
+    "speed": 1.023,
+    "timestamp": "2026-02-03T18:46:35.355Z"
+  },
+  "po-karilek": {
+    "offset": 0.35,
+    "speed": 0.857,
+    "timestamp": "2026-02-03T18:57:18.289Z"
+  },
+  "po-keld": {
+    "offset": 0.25,
+    "speed": 0.841,
+    "timestamp": "2026-02-03T19:11:43.998Z"
+  },
+  "po-knzzl": {
+    "offset": 0.54,
+    "speed": 1.107,
+    "timestamp": "2026-02-03T19:14:14.864Z"
+  },
+  "po-kyrk": {
+    "offset": 1.09,
+    "speed": 1.042,
+    "timestamp": "2026-02-03T19:16:23.737Z"
+  },
+  "po-langspyt": {
+    "offset": 0.7,
+    "speed": 1.022,
+    "timestamp": "2026-02-03T19:19:11.449Z"
+  },
+  "po-lissmyrerik3": {
+    "offset": 0.22,
+    "speed": 0.87,
+    "timestamp": "2026-02-03T19:20:19.319Z"
+  },
+  "po-loftahammar": {
+    "offset": 0.76,
+    "speed": 1.021,
+    "timestamp": "2026-02-03T19:21:41.284Z"
+  },
+  "po-lomjansgut": {
+    "offset": 0.23,
+    "speed": 0.899,
+    "timestamp": "2026-02-03T19:23:24.467Z"
+  },
+  "po-lorrich": {
+    "offset": 0.9,
+    "speed": 0.867,
+    "timestamp": "2026-02-03T19:26:36.979Z"
+  },
+  "po-monisolle": {
+    "offset": 0.61,
+    "speed": 1.146,
+    "timestamp": "2026-02-03T19:29:08.649Z"
+  },
+  "po-mors": {
+    "offset": 0.46,
+    "speed": 1.039,
+    "timestamp": "2026-02-03T19:32:14.325Z"
+  },
+  "po-nzcken1": {
+    "offset": 0.15,
+    "speed": 1.158,
+    "timestamp": "2026-02-03T19:33:51.117Z"
+  },
+  "po-ochsenszzzbzzrviut": {
+    "offset": 1.35,
+    "speed": 1.145,
+    "timestamp": "2026-02-03T19:42:54.313Z"
+  },
+  "po-ole50": {
+    "offset": 0.57,
+    "speed": 0.972,
+    "timestamp": "2026-02-03T19:45:07.035Z"
+  },
+  "po-olestres": {
+    "offset": 0.2,
+    "speed": 1.102,
+    "timestamp": "2026-02-03T19:58:55.515Z"
+  },
+  "po-pekkoperstor": {
+    "offset": 0.35,
+    "speed": 1.326,
+    "timestamp": "2026-02-03T20:01:03.125Z"
+  },
+  "po-pellef": {
+    "offset": 0.38,
+    "speed": 1.108,
+    "timestamp": "2026-02-03T20:03:17.063Z"
+  },
+  "po-pollonesblom": {
+    "offset": 0.31,
+    "speed": 1.306,
+    "timestamp": "2026-02-03T20:06:23.087Z"
+  },
+  "po-sammeles": {
+    "offset": 0.57,
+    "speed": 1.091,
+    "timestamp": "2026-02-03T20:07:34.923Z"
+  },
+  "po-sensommer": {
+    "offset": 0.08,
+    "speed": 1.036,
+    "timestamp": "2026-02-03T20:08:23.740Z"
+  },
+  "po-sparva": {
+    "offset": 0.03,
+    "speed": 0.99,
+    "timestamp": "2026-02-03T20:09:36.271Z"
+  },
+  "po-springdanstrio": {
+    "offset": 0.74,
+    "speed": 0.977,
+    "timestamp": "2026-02-03T20:11:49.553Z"
+  },
+  "po-svengref": {
+    "offset": 0.5,
+    "speed": 1.039,
+    "timestamp": "2026-02-03T20:14:49.711Z"
+  },
+  "po-sysore1": {
+    "offset": 0,
+    "speed": 1.088,
+    "timestamp": "2026-02-03T20:15:11.087Z"
+  },
+  "po-sysore2": {
+    "offset": 0,
+    "speed": 1.045,
+    "timestamp": "2026-02-03T20:15:38.361Z"
+  },
+  "po-syster3": {
+    "offset": 0.47,
+    "speed": 1.049,
+    "timestamp": "2026-02-03T20:16:47.562Z"
+  },
+  "po-timasstor": {
+    "offset": 0.29,
+    "speed": 0.852,
+    "timestamp": "2026-02-03T20:18:37.047Z"
+  },
+  "po-tordyvel": {
+    "offset": 0.39,
+    "speed": 0.809,
+    "timestamp": "2026-02-03T20:20:04.199Z"
+  },
+  "po-torsmo": {
+    "offset": 0.77,
+    "speed": 0.829,
+    "timestamp": "2026-02-03T20:21:08.856Z"
+  },
+  "po-trestrzzm": {
+    "offset": 0.59,
+    "speed": 1.138,
+    "timestamp": "2026-02-03T20:22:42.012Z"
+  },
+  "po-ullas": {
+    "offset": 0.57,
+    "speed": 0.995,
+    "timestamp": "2026-02-03T20:24:31.578Z"
+  },
+  "po-varmeknus": {
+    "offset": 0.34,
+    "speed": 1.128,
+    "timestamp": "2026-02-03T20:30:37.004Z"
+  },
+  "po-vzzzrgli": {
+    "offset": 0,
+    "speed": 1.301,
+    "timestamp": "2026-02-03T20:31:18.249Z"
+  },
+  "po-vzzzrvindarfriska": {
+    "offset": 0,
+    "speed": 1.016,
+    "timestamp": "2026-02-03T20:31:42.458Z"
+  },
+  "sc-brordahl": {
+    "offset": 0.29,
+    "speed": 1.178,
+    "timestamp": "2026-02-03T20:41:52.507Z"
+  },
+  "sc-hurlumhej": {
+    "offset": 0.89,
+    "speed": 0.766,
+    "timestamp": "2026-02-03T20:39:01.618Z"
+  },
+  "sc-idre3": {
+    "offset": 0.48,
+    "speed": 1.012,
+    "timestamp": "2026-02-03T20:43:06.073Z"
+  },
+  "sc-melchior": {
+    "offset": 0.28,
+    "speed": 0.975,
+    "timestamp": "2026-02-03T20:46:03.506Z"
+  },
+  "sc-rejlznder1": {
+    "offset": 0.6,
+    "speed": 1.212,
+    "timestamp": "2026-02-03T20:47:03.554Z"
+  },
+  "sc-tant": {
+    "offset": 2.46,
+    "speed": 1.105,
+    "timestamp": "2026-02-03T20:50:03.481Z"
+  },
+  "sc-tores": {
+    "offset": 0.22,
+    "speed": 1.105,
+    "timestamp": "2026-02-03T20:50:49.439Z"
+  },
+  "tr-femten": {
+    "offset": 1.02,
+    "speed": 0.917,
+    "timestamp": "2026-02-03T20:52:52.349Z"
+  },
+  "tr-gamletre": {
+    "offset": 0.63,
+    "speed": 1.179,
+    "timestamp": "2026-02-03T20:54:38.560Z"
+  },
+  "tu-berliner": {
+    "offset": 0,
+    "speed": 0.945,
+    "timestamp": "2026-02-04T10:39:48.946Z"
+  },
+  "po-tvilling": {
+    "offset": 0.1,
+    "speed": 1.003,
+    "timestamp": "2026-02-04T05:45:28.331Z"
+  },
+  "tu-gammelok": {
+    "offset": 0.43,
+    "speed": 0.995,
+    "timestamp": "2026-02-04T06:25:49.666Z"
+  },
+  "tu-ottetur": {
+    "offset": 0.65,
+    "speed": 0.852,
+    "timestamp": "2026-02-04T06:47:49.360Z"
+  },
+  "va-7zzzrs": {
+    "offset": 0.36,
+    "speed": 0.999,
+    "timestamp": "2026-02-04T06:49:05.496Z"
+  },
+  "va-beckasin": {
+    "offset": 0.35,
+    "speed": 0.871,
+    "timestamp": "2026-02-04T06:51:32.765Z"
+  },
+  "va-berit60": {
+    "offset": 0.62,
+    "speed": 1.203,
+    "timestamp": "2026-02-04T06:53:29.490Z"
+  },
+  "va-cesar": {
+    "offset": 0.47,
+    "speed": 1.002,
+    "timestamp": "2026-02-04T07:03:37.574Z"
+  },
+  "va-elin70": {
+    "offset": 0,
+    "speed": 1.057,
+    "timestamp": "2026-02-04T07:27:44.338Z"
+  },
+  "va-elladop": {
+    "offset": 0,
+    "speed": 1.104,
+    "timestamp": "2026-02-04T07:28:15.403Z"
+  },
+  "va-emma": {
+    "offset": 0.41,
+    "speed": 1.086,
+    "timestamp": "2026-02-04T07:34:21.810Z"
+  },
+  "va-fjern": {
+    "offset": 0.73,
+    "speed": 1.127,
+    "timestamp": "2026-02-04T07:57:34.763Z"
+  },
+  "va-folldal": {
+    "offset": 0.36,
+    "speed": 1.054,
+    "timestamp": "2026-02-04T07:58:11.304Z"
+  },
+  "va-gammaldala": {
+    "offset": 0.44,
+    "speed": 1.026,
+    "timestamp": "2026-02-04T08:01:35.923Z"
+  },
+  "va-gmol": {
+    "offset": 2.56,
+    "speed": 0.952,
+    "timestamp": "2026-02-04T08:03:14.347Z"
+  },
+  "va-hultklzp": {
+    "offset": 0.71,
+    "speed": 0.93,
+    "timestamp": "2026-02-04T08:09:00.164Z"
+  },
+  "va-husets": {
+    "offset": 0.35,
+    "speed": 0.597,
+    "timestamp": "2026-02-04T08:12:27.452Z"
+  },
+  "va-konrad": {
+    "offset": 0.17,
+    "speed": 1.008,
+    "timestamp": "2026-02-04T08:40:19.363Z"
+  },
+  "va-lejsme2": {
+    "offset": 0.99,
+    "speed": 0.956,
+    "timestamp": "2026-02-04T08:50:41.651Z"
+  },
+  "va-lilleszde": {
+    "offset": 0.93,
+    "speed": 1.022,
+    "timestamp": "2026-02-04T08:54:20.557Z"
+  },
+  "va-lzszz1": {
+    "offset": 1.14,
+    "speed": 0.884,
+    "timestamp": "2026-02-04T09:10:46.289Z"
+  },
+  "va-olekjzr": {
+    "offset": 0.07,
+    "speed": 0.951,
+    "timestamp": "2026-02-04T09:12:19.114Z"
+  },
+  "va-pajala": {
+    "offset": 0,
+    "speed": 1.165,
+    "timestamp": "2026-02-04T09:14:20.499Z"
+  },
+  "va-pinnin": {
+    "offset": 0.33,
+    "speed": 1.233,
+    "timestamp": "2026-02-04T09:15:38.772Z"
+  },
+  "va-rzzrosvals": {
+    "offset": 0.1,
+    "speed": 0.869,
+    "timestamp": "2026-02-04T09:16:34.650Z"
+  },
+  "va-skzznne": {
+    "offset": 0.16,
+    "speed": 1.098,
+    "timestamp": "2026-02-04T09:17:26.871Z"
+  },
+  "va-sonja80": {
+    "offset": 0.23,
+    "speed": 1.001,
+    "timestamp": "2026-02-04T09:18:52.605Z"
+  },
+  "va-spelmans": {
+    "offset": 0.4,
+    "speed": 1.032,
+    "timestamp": "2026-02-04T09:20:17.684Z"
+  },
+  "po-tydell": {
+    "offset": 0.52,
+    "speed": 1.068,
+    "timestamp": "2026-02-04T09:23:54.874Z"
+  }
+}

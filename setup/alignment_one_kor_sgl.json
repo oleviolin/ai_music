@@ -1,0 +1,652 @@
+{
+  "po-timasstor": {
+    "calc_offset": 0.0,
+    "calc_speed": 0.852,
+    "is_frozen": false
+  },
+  "po-grivmomos": {
+    "calc_offset": 0.0,
+    "calc_speed": 1.006,
+    "is_frozen": false
+  },
+  "po-svengref": {
+    "calc_offset": 0.0,
+    "calc_speed": 1.045,
+    "is_frozen": false
+  },
+  "po-60zzzrs": {
+    "calc_offset": 0.0,
+    "calc_speed": 1.146,
+    "is_frozen": false
+  },
+  "po-bronzz": {
+    "calc_offset": 0.0,
+    "calc_speed": 1.03,
+    "is_frozen": false
+  },
+  "kr-ida": {
+    "calc_offset": 0.0,
+    "calc_speed": 0.704,
+    "is_frozen": false
+  },
+  "va-husets": {
+    "calc_offset": 0.0,
+    "calc_speed": 0.605,
+    "is_frozen": false
+  },
+  "po-arnemiklabr": {
+    "calc_offset": 0.0,
+    "calc_speed": 1.047,
+    "is_frozen": false
+  },
+  "pk-ydre": {
+    "calc_offset": 0.0,
+    "calc_speed": 0.964,
+    "is_frozen": false
+  },
+  "sc-rejlznder1": {
+    "calc_offset": 0.0,
+    "calc_speed": 1.213,
+    "is_frozen": false
+  },
+  "pk-blzding": {
+    "calc_offset": 0.0,
+    "calc_speed": 1.053,
+    "is_frozen": false
+  },
+  "po-jzmtex": {
+    "calc_offset": 0.0,
+    "calc_speed": 0.97,
+    "is_frozen": false
+  },
+  "po-herrejebrud": {
+    "calc_offset": 0.0,
+    "calc_speed": 0.674,
+    "is_frozen": false
+  },
+  "po-donat": {
+    "calc_offset": 0.0,
+    "calc_speed": 1.096,
+    "is_frozen": false
+  },
+  "po-eda1": {
+    "calc_offset": 0.0,
+    "calc_speed": 0.948,
+    "is_frozen": false
+  },
+  "po-trestrzzm": {
+    "calc_offset": 0.0,
+    "calc_speed": 1.143,
+    "is_frozen": false
+  },
+  "po-tvilling": {
+    "calc_offset": 0.0,
+    "calc_speed": 1.002,
+    "is_frozen": false
+  },
+  "po-karilek": {
+    "calc_offset": 0.0,
+    "calc_speed": 0.861,
+    "is_frozen": false
+  },
+  "po-langspyt": {
+    "calc_offset": 0.0,
+    "calc_speed": 1.031,
+    "is_frozen": false
+  },
+  "ha-turinge": {
+    "calc_offset": 0.0,
+    "calc_speed": 0.941,
+    "is_frozen": true
+  },
+  "fa-stam": {
+    "calc_offset": 0.0,
+    "calc_speed": 1.287,
+    "is_frozen": false
+  },
+  "po-nzcken1": {
+    "calc_offset": 0.0,
+    "calc_speed": 1.161,
+    "is_frozen": false
+  },
+  "tr-femten": {
+    "calc_offset": 0.0,
+    "calc_speed": 0.94,
+    "is_frozen": false
+  },
+  "po-sparva": {
+    "calc_offset": 0.0,
+    "calc_speed": 0.99,
+    "is_frozen": false
+  },
+  "po-ochsenszzzbzzrviut": {
+    "calc_offset": 0.0,
+    "calc_speed": 1.146,
+    "is_frozen": false
+  },
+  "po-pekkoperstor": {
+    "calc_offset": 0.0,
+    "calc_speed": 1.323,
+    "is_frozen": true
+  },
+  "po-ensuptill": {
+    "calc_offset": 0.0,
+    "calc_speed": 1.02,
+    "is_frozen": false
+  },
+  "po-kallakzzzrar": {
+    "calc_offset": 0.0,
+    "calc_speed": 1.018,
+    "is_frozen": false
+  },
+  "va-berit60": {
+    "calc_offset": 0.0,
+    "calc_speed": 1.217,
+    "is_frozen": false
+  },
+  "po-andrahalvan": {
+    "calc_offset": 0.0,
+    "calc_speed": 0.931,
+    "is_frozen": false
+  },
+  "po-far90": {
+    "calc_offset": 0.0,
+    "calc_speed": 1.012,
+    "is_frozen": false
+  },
+  "po-monisolle": {
+    "calc_offset": 0.0,
+    "calc_speed": 1.146,
+    "is_frozen": false
+  },
+  "po-kyrk": {
+    "calc_offset": 0.0,
+    "calc_speed": 1.042,
+    "is_frozen": false
+  },
+  "po-mors": {
+    "calc_offset": 0.0,
+    "calc_speed": 1.044,
+    "is_frozen": false
+  },
+  "pk-forkertvestenom": {
+    "calc_offset": 0.0,
+    "calc_speed": 1.007,
+    "is_frozen": false
+  },
+  "va-elin70": {
+    "calc_offset": 0.0,
+    "calc_speed": 1.051,
+    "is_frozen": false
+  },
+  "po-elverum": {
+    "calc_offset": 0.0,
+    "calc_speed": 1.241,
+    "is_frozen": false
+  },
+  "va-folldal": {
+    "calc_offset": 0.0,
+    "calc_speed": 1.054,
+    "is_frozen": false
+  },
+  "va-rzzrosvals": {
+    "calc_offset": 0.0,
+    "calc_speed": 0.869,
+    "is_frozen": false
+  },
+  "po-vzzzrgli": {
+    "calc_offset": 0.0,
+    "calc_speed": 1.309,
+    "is_frozen": true
+  },
+  "va-skzznne": {
+    "calc_offset": 0.0,
+    "calc_speed": 1.098,
+    "is_frozen": false
+  },
+  "pk-christina70": {
+    "calc_offset": 0.0,
+    "calc_speed": 1.161,
+    "is_frozen": false
+  },
+  "mg-zppelbo": {
+    "calc_offset": 0.0,
+    "calc_speed": 1.035,
+    "is_frozen": false
+  },
+  "po-hedinig": {
+    "calc_offset": 0.0,
+    "calc_speed": 0.926,
+    "is_frozen": false
+  },
+  "po-bingsjzzblzzzbok": {
+    "calc_offset": 0.0,
+    "calc_speed": 1.158,
+    "is_frozen": false
+  },
+  "po-gelotte": {
+    "calc_offset": 0.0,
+    "calc_speed": 1.18,
+    "is_frozen": false
+  },
+  "va-cesar": {
+    "calc_offset": 0.0,
+    "calc_speed": 0.875,
+    "is_frozen": false
+  },
+  "po-sysore1": {
+    "calc_offset": 0.0,
+    "calc_speed": 1.088,
+    "is_frozen": false
+  },
+  "va-gammaldala": {
+    "calc_offset": 0.0,
+    "calc_speed": 1.033,
+    "is_frozen": false
+  },
+  "pk-jeppescykel": {
+    "calc_offset": 0.0,
+    "calc_speed": 1.102,
+    "is_frozen": false
+  },
+  "po-horrepolska": {
+    "calc_offset": 0.0,
+    "calc_speed": 0.937,
+    "is_frozen": false
+  },
+  "po-backlinaren": {
+    "calc_offset": 0.0,
+    "calc_speed": 1.034,
+    "is_frozen": false
+  },
+  "fa-nzzzrvin": {
+    "calc_offset": 0.0,
+    "calc_speed": 0.988,
+    "is_frozen": false
+  },
+  "va-lejsme2": {
+    "calc_offset": 0.0,
+    "calc_speed": 0.961,
+    "is_frozen": true
+  },
+  "po-ganders1": {
+    "calc_offset": 0.0,
+    "calc_speed": 1.124,
+    "is_frozen": false
+  },
+  "va-beckasin": {
+    "calc_offset": 0.0,
+    "calc_speed": 0.876,
+    "is_frozen": true
+  },
+  "po-springdanstrio": {
+    "calc_offset": 0.0,
+    "calc_speed": 0.989,
+    "is_frozen": false
+  },
+  "po-allakollor": {
+    "calc_offset": 0.0,
+    "calc_speed": 0.929,
+    "is_frozen": false
+  },
+  "va-7zzzrs": {
+    "calc_offset": 0.0,
+    "calc_speed": 0.994,
+    "is_frozen": false
+  },
+  "po-farmorsbrud": {
+    "calc_offset": 0.0,
+    "calc_speed": 1.001,
+    "is_frozen": false
+  },
+  "po-gulliserk": {
+    "calc_offset": 0.0,
+    "calc_speed": 0.998,
+    "is_frozen": false
+  },
+  "fa-kirstensbrudestyk": {
+    "calc_offset": 0.0,
+    "calc_speed": 1.01,
+    "is_frozen": false
+  },
+  "va-sonja80": {
+    "calc_offset": 0.0,
+    "calc_speed": 1.015,
+    "is_frozen": false
+  },
+  "po-vzzzrvindarfriska": {
+    "calc_offset": 0.0,
+    "calc_speed": 1.016,
+    "is_frozen": false
+  },
+  "sc-brordahl": {
+    "calc_offset": 0.0,
+    "calc_speed": 1.198,
+    "is_frozen": false
+  },
+  "mg-brudjzmt": {
+    "calc_offset": 0.0,
+    "calc_speed": 0.944,
+    "is_frozen": false
+  },
+  "po-lissmyrerik3": {
+    "calc_offset": 0.0,
+    "calc_speed": 0.87,
+    "is_frozen": true
+  },
+  "va-lzszz1": {
+    "calc_offset": 0.0,
+    "calc_speed": 0.9,
+    "is_frozen": false
+  },
+  "va-emma": {
+    "calc_offset": 0.0,
+    "calc_speed": 1.086,
+    "is_frozen": false
+  },
+  "sc-tant": {
+    "calc_offset": 0.0,
+    "calc_speed": 1.156,
+    "is_frozen": false
+  },
+  "po-brzndjon": {
+    "calc_offset": 0.0,
+    "calc_speed": 1.007,
+    "is_frozen": false
+  },
+  "kr-jzzdemor": {
+    "calc_offset": 0.0,
+    "calc_speed": 0.945,
+    "is_frozen": false
+  },
+  "po-ullas": {
+    "calc_offset": 0.0,
+    "calc_speed": 0.995,
+    "is_frozen": false
+  },
+  "po-hambreus": {
+    "calc_offset": 0.0,
+    "calc_speed": 0.995,
+    "is_frozen": true
+  },
+  "fa-kirstine": {
+    "calc_offset": 0.0,
+    "calc_speed": 1.067,
+    "is_frozen": false
+  },
+  "sc-idre3": {
+    "calc_offset": 0.0,
+    "calc_speed": 1.008,
+    "is_frozen": true
+  },
+  "po-julottan": {
+    "calc_offset": 0.0,
+    "calc_speed": 0.926,
+    "is_frozen": false
+  },
+  "po-tordyvel": {
+    "calc_offset": 0.0,
+    "calc_speed": 0.809,
+    "is_frozen": false
+  },
+  "po-sammeles": {
+    "calc_offset": 0.0,
+    "calc_speed": 1.097,
+    "is_frozen": false
+  },
+  "tu-gammelok": {
+    "calc_offset": 0.0,
+    "calc_speed": 0.995,
+    "is_frozen": true
+  },
+  "sc-tores": {
+    "calc_offset": 0.0,
+    "calc_speed": 1.105,
+    "is_frozen": true
+  },
+  "va-pajala": {
+    "calc_offset": 0.0,
+    "calc_speed": 1.17,
+    "is_frozen": false
+  },
+  "po-keld": {
+    "calc_offset": 0.0,
+    "calc_speed": 0.668,
+    "is_frozen": false
+  },
+  "po-janor": {
+    "calc_offset": 0.0,
+    "calc_speed": 0.955,
+    "is_frozen": false
+  },
+  "po-indusbacken": {
+    "calc_offset": 0.0,
+    "calc_speed": 0.459,
+    "is_frozen": true
+  },
+  "po-torsmo": {
+    "calc_offset": 0.0,
+    "calc_speed": 0.828,
+    "is_frozen": false
+  },
+  "va-konrad": {
+    "calc_offset": 0.0,
+    "calc_speed": 1.008,
+    "is_frozen": false
+  },
+  "sc-hurlumhej": {
+    "calc_offset": 0.0,
+    "calc_speed": 0.769,
+    "is_frozen": false
+  },
+  "va-pinnin": {
+    "calc_offset": 0.0,
+    "calc_speed": 1.232,
+    "is_frozen": false
+  },
+  "tu-berliner": {
+    "calc_offset": 0.0,
+    "calc_speed": 0.71,
+    "is_frozen": false
+  },
+  "po-pollonesblom": {
+    "calc_offset": 0.0,
+    "calc_speed": 1.277,
+    "is_frozen": true
+  },
+  "po-hzzzllberg": {
+    "calc_offset": 0.0,
+    "calc_speed": 1.068,
+    "is_frozen": false
+  },
+  "mg-skommar": {
+    "calc_offset": 0.0,
+    "calc_speed": 0.999,
+    "is_frozen": false
+  },
+  "po-tydell": {
+    "calc_offset": 0.0,
+    "calc_speed": 1.063,
+    "is_frozen": false
+  },
+  "po-sysore2": {
+    "calc_offset": 0.0,
+    "calc_speed": 1.045,
+    "is_frozen": false
+  },
+  "va-hultklzp": {
+    "calc_offset": 0.0,
+    "calc_speed": 0.944,
+    "is_frozen": false
+  },
+  "ha-mzzllevzzzng": {
+    "calc_offset": 0.0,
+    "calc_speed": 1.002,
+    "is_frozen": false
+  },
+  "po-varmeknus": {
+    "calc_offset": 0.0,
+    "calc_speed": 0.644,
+    "is_frozen": false
+  },
+  "mn-allagossar": {
+    "calc_offset": 0.0,
+    "calc_speed": 1.052,
+    "is_frozen": false
+  },
+  "tr-gamletre": {
+    "calc_offset": 0.0,
+    "calc_speed": 1.196,
+    "is_frozen": false
+  },
+  "po-drzngjerkig": {
+    "calc_offset": 0.0,
+    "calc_speed": 1.065,
+    "is_frozen": false
+  },
+  "po-loftahammar": {
+    "calc_offset": 0.0,
+    "calc_speed": 1.031,
+    "is_frozen": false
+  },
+  "po-lomjansgut": {
+    "calc_offset": 0.0,
+    "calc_speed": 0.899,
+    "is_frozen": false
+  },
+  "sc-melchior": {
+    "calc_offset": 0.0,
+    "calc_speed": 0.992,
+    "is_frozen": true
+  },
+  "va-elladop": {
+    "calc_offset": 0.0,
+    "calc_speed": 1.105,
+    "is_frozen": false
+  },
+  "va-gmol": {
+    "calc_offset": 0.0,
+    "calc_speed": 0.981,
+    "is_frozen": true
+  },
+  "va-fjern": {
+    "calc_offset": 0.0,
+    "calc_speed": 1.127,
+    "is_frozen": false
+  },
+  "tu-ottetur": {
+    "calc_offset": 0.0,
+    "calc_speed": 0.853,
+    "is_frozen": false
+  },
+  "fa-mathis": {
+    "calc_offset": 0.0,
+    "calc_speed": 0.927,
+    "is_frozen": true
+  },
+  "va-spelmans": {
+    "calc_offset": 0.0,
+    "calc_speed": 1.029,
+    "is_frozen": false
+  },
+  "po-annegretesoren": {
+    "calc_offset": 0.0,
+    "calc_speed": 0.99,
+    "is_frozen": false
+  },
+  "kr-muntre": {
+    "calc_offset": 0.0,
+    "calc_speed": 0.873,
+    "is_frozen": true
+  },
+  "po-knzzl": {
+    "calc_offset": 0.0,
+    "calc_speed": 1.118,
+    "is_frozen": false
+  },
+  "po-pellef": {
+    "calc_offset": 0.0,
+    "calc_speed": 1.112,
+    "is_frozen": false
+  },
+  "va-lilleszde": {
+    "calc_offset": 0.0,
+    "calc_speed": 1.049,
+    "is_frozen": false
+  },
+  "po-brzndjonp": {
+    "calc_offset": 0.0,
+    "calc_speed": 0.835,
+    "is_frozen": false
+  },
+  "fa-avildans": {
+    "calc_offset": 0.0,
+    "calc_speed": 1.02,
+    "is_frozen": false
+  },
+  "va-olekjzr": {
+    "calc_offset": 0.0,
+    "calc_speed": 0.951,
+    "is_frozen": false
+  },
+  "po-olestres": {
+    "calc_offset": 0.0,
+    "calc_speed": 3.356,
+    "is_frozen": false
+  },
+  "po-enkronas": {
+    "calc_offset": 0.0,
+    "calc_speed": 0.981,
+    "is_frozen": false
+  },
+  "po-hulszz": {
+    "calc_offset": 0.0,
+    "calc_speed": 0.977,
+    "is_frozen": false
+  },
+  "po-sensommer": {
+    "calc_offset": 0.0,
+    "calc_speed": 1.036,
+    "is_frozen": true
+  },
+  "mn-enninger": {
+    "calc_offset": 0.0,
+    "calc_speed": 1.183,
+    "is_frozen": false
+  },
+  "po-ole50": {
+    "calc_offset": 0.0,
+    "calc_speed": 0.98,
+    "is_frozen": false
+  },
+  "po-jannm": {
+    "calc_offset": 0.0,
+    "calc_speed": 1.063,
+    "is_frozen": true
+  },
+  "po-blecko1": {
+    "calc_offset": 0.0,
+    "calc_speed": 0.88,
+    "is_frozen": false
+  },
+  "po-lorrich": {
+    "calc_offset": 0.0,
+    "calc_speed": 0.879,
+    "is_frozen": true
+  },
+  "po-annettejensbr": {
+    "calc_offset": 0.0,
+    "calc_speed": 1.167,
+    "is_frozen": false
+  },
+  "po-syster3": {
+    "calc_offset": 0.0,
+    "calc_speed": 1.055,
+    "is_frozen": false
+  },
+  "po-fzzrstahalvan": {
+    "calc_offset": 0.0,
+    "calc_speed": 0.93,
+    "is_frozen": false
+  }
+}

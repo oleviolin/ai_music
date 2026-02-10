@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Spillefolk Annotation Workbench</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+    <script src="https://unpkg.com/@tonejs/midi"></script>
+    <style>
+        body { font-family: sans-serif; background: #f0f0f0; padding: 20px; user-select: none; }
+        .controls { background: white; padding: 15px; border-radius: 8px; display: flex; gap: 20px; align-items: center; margin-bottom: 20px; flex-wrap: wrap; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .mixer { background: #e9ecef; padding: 8px 15px; border-radius: 5px; display: flex; gap: 15px; align-items: center; border: 1px solid #ccc; }
+        .radios { display: flex; flex-direction: column; gap: 2px; font-size: 11px; }
+        .slider-group { display: flex; flex-direction: column; }
+        label { font-size: 11px; font-weight: bold; color: #666; text-transform: uppercase; margin-bottom: 4px; cursor: pointer; }
+        label:hover { color: #007bff; }
+        select { padding: 6px; border-radius: 4px; border: 1px solid #ccc; }
+        select:focus { outline: 2px solid #007bff; }
+        button { padding: 8px 16px; cursor: pointer; background: #007bff; color: white; border: none; border-radius: 4px; font-weight: bold; }
+        button:hover { background: #0056b3; }
+        .quick-btn { padding: 2px 6px; font-size: 10px; margin-left: 5px; background: #6c757d; border-radius: 3px; color: white; border:none; cursor: pointer;}
+        button#btnSave { background: #28a745; }
+        #seekContainer { width: 100%; margin-bottom: 5px; position: relative; height: 20px; }
+        #seekBar { width: 100%; cursor: pointer; margin: 0; }
+        .visualizer { background: white; padding: 0; border-radius: 8px; position: relative; height: 400px; overflow: hidden; border: 1px solid #ccc; cursor: crosshair; }
+        #waveCanvas { position: absolute; top: 0; left: 0; z-index: 1; opacity: 0.5; pointer-events: none; }
+        #onsetCanvas { position: absolute; top: 0; left: 0; z-index: 2; pointer-events: none; }
+        #piano-roll { position: relative; z-index: 5; height: 100%; width: 100%; } 
+        #playhead { position: absolute; top: 0; bottom: 0; width: 2px; background: #ff0000; z-index: 30; left: 0; pointer-events: none; }
+        .note { position: absolute; height: 6px; background: #4CAF50; border-radius: 2px; opacity: 0.8; pointer-events: none; }
+        .badge { font-weight: bold; margin-left: 5px; font-size: 10px; display: none; padding: 2px 4px; border-radius: 3px; }
+        .frozen-badge { color: white; background: red; }
+        .saved-badge { color: white; background: green; }
+        .status-bar { margin-left: auto; text-align: right; }
+        #timeDisplay { font-family: monospace; font-size: 18px; font-weight: bold; color: #333; }
+        #status { font-size: 12px; color: #666; margin-top: 2px; }
+        .marker { position: absolute; top: 0; bottom: 0; width: 2px; z-index: 20; pointer-events: none; display: none; }
+        #markerA { background: #00ff00; border-left: 2px solid lime; }
+        #markerB { background: #ff0000; border-right: 2px solid red; }
+        #loopRegion { position: absolute; top: 0; bottom: 0; background: rgba(0, 255, 0, 0.1); z-index: 4; display: none; pointer-events: none;}        
+    </style>
+</head>
+<body>
+    <div class="controls">
+        <div class="slider-group">
+            <label>Category</label>
+            <select id="catSelect">
+                <option value="first">First (Synth)</option>
+                <option value="one_kor_sgl">Solo</option>
+                <option value="one_kor">Orchestra</option>
+                <option value="debug">🧪 Debug / Experimental</option>
+            </select>
+        </div>
+        <div class="slider-group">
+            <label for="melodySelect" onclick="document.getElementById('melodySelect').focus()">
+                Melody 
+                <span id="savedBadge" class="badge saved-badge">SAVED</span>
+                <span id="frozenBadge" class="badge frozen-badge">FROZEN</span>
+            </label>
+            <select id="melodySelect" style="min-width: 200px;"></select>
+        </div>
+        
+        <button id="btnPlay">▶ Play (P)</button>
+        <button id="btnStop" style="background:#dc3545;">■ Stop (S)</button>
+        
+        <div class="mixer">
+            <div class="slider-group" style="flex-direction: row; gap: 8px; align-items: center;">
+                <input type="checkbox" id="chkAudio" checked> <label for="chkAudio">Audio (R)</label>
+            </div>
+            <div class="slider-group" style="flex-direction: row; gap: 8px; align-items: center;">
+                <input type="checkbox" id="chkMidi" checked> <label for="chkMidi">Midi (L)</label>
+            </div>
+        </div>
+        
+        <div class="slider-group">
+            <label>Align Mode</label>
+            <div class="radios">
+                <label><input type="radio" name="alignMode" value="global"> Global</label>
+                <label><input type="radio" name="alignMode" value="manual" checked> Manual</label>
+                <label><input type="radio" name="alignMode" value="dtw"> DTW</label>
+            </div>
+        </div>
+
+        <div class="slider-group">
+            <label for="offsetRange">Offset: <span id="offsetVal">0.000</span>
+                <button class="quick-btn" onclick="setOffsetToCursor()">Cur</button>
+                <button class="quick-btn" onclick="setQuickOffset(0.0)">0</button>
+            </label>
+            <input type="range" id="offsetRange" min="-6" max="10" step="0.01" value="0">
+        </div>
+
+        <div class="slider-group" id="sliderGroup">
+            <label for="stretchRange">Speed: <span id="stretchVal">1.000</span>
+                <button class="quick-btn" onclick="setQuickSpeed(1.0)">1</button>
+            </label>
+            <input type="range" id="stretchRange" min="0.5" max="1.5" step="0.001" value="1.0">
+        </div>
+        
+        <button id="btnSave">💾 Save</button>
+        <button id="btnRefresh" style="background:#6c757d; font-size: 18px; padding: 4px 10px;">↻</button>
+
+        <div class="status-bar">
+            <div id="timeDisplay">0:00</div>
+            <div id="status">Ready</div>
+        </div>
+    </div>
+
+    <div id="seekContainer"><input type="range" id="seekBar" value="0" min="0" step="0.1" disabled></div>
+    <div class="visualizer" id="timelineContainer">
+        <div id="playhead"></div><div id="markerA" class="marker"></div><div id="markerB" class="marker"></div><div id="loopRegion"></div>        
+        <canvas id="onsetCanvas" height="400"></canvas><canvas id="waveCanvas" height="400"></canvas><div id="piano-roll"></div>
+    </div>
+
+    <script>
+        let currentMidi = null, player = null, synth = null, duration = 0;
+        let midiOffset = 0.0, midiStretch = 1.0;
+        let loopA = 0, loopB = 0;        
+        let globalAlign = {}, manualAlign = {}, dtwAlign = {}; 
+        let isProgrammaticChange = false; 
+
+        async function init() {
+            // Audio (Stereo)
+            const synthPanner = new Tone.Panner(-0.8).toDestination();
+            synth = new Tone.PolySynth(Tone.Synth, { volume: -2, envelope: { attack: 0.02, decay: 0.1, sustain: 0.3, release: 1 } }).connect(synthPanner);
+            const playerPanner = new Tone.Panner(0.8).toDestination();
+
+            // Listeners
+            document.getElementById('catSelect').onchange = updateSongList;
+            document.getElementById('melodySelect').onchange = loadSong;
+            document.getElementById('btnPlay').onclick = togglePlay;
+            document.getElementById('btnStop').onclick = restartFromBeginning;
+            document.getElementById('btnSave').onclick = saveAlignment;
+            document.getElementById('btnRefresh').onclick = reAnalyzeSong;
+            document.getElementById('chkAudio').onchange = (e) => { if(player) player.mute = !e.target.checked; };
+            document.getElementById('chkMidi').onchange = (e) => { synth.volume.value = e.target.checked ? -2 : -Infinity; };
+            
+            // Mode Switching
+            document.querySelectorAll('input[name="alignMode"]').forEach(r => r.onchange = () => { 
+                if(!isProgrammaticChange) saveSettings(); 
+                applyAlignmentStrategy(); 
+            });
+
+            // Slider Logic
+            const updateAlign = () => {
+                 midiOffset = parseFloat(document.getElementById('offsetRange').value);
+                 midiStretch = parseFloat(document.getElementById('stretchRange').value);
+                 document.getElementById('offsetVal').innerText = midiOffset.toFixed(3);
+                 document.getElementById('stretchVal').innerText = midiStretch.toFixed(3);
+                 drawMidi(); drawOnsets();
+            };
+            const applyAlign = () => { updateAlign(); scheduleMidi(); };
+            ['offsetRange', 'stretchRange'].forEach(id => {
+                const el = document.getElementById(id);
+                el.oninput = updateAlign; el.onchange = applyAlign;
+                el.ondblclick = () => { el.value = (id==='offsetRange'?0:1); applyAlign(); };
+            });
+
+            // Seek & Jump
+            const sb = document.getElementById('seekBar');
+            sb.oninput = () => updatePlayheadVisuals(parseFloat(sb.value));
+            sb.onchange = () => { Tone.Transport.seconds = parseFloat(sb.value); };
+            
+            document.getElementById('timelineContainer').addEventListener('click', (e) => {
+                const rect = e.currentTarget.getBoundingClientRect();
+                const t = ((e.clientX - rect.left) / rect.width) * (duration || 30);
+                Tone.Transport.seconds = Math.max(0, t);
+                updatePlayheadVisuals(t);
+            });
+
+            window.playerPanner = playerPanner;
+            await updateSongList();
+            requestAnimationFrame(animateLoop);
+        }
+
+        async function saveSettings() {
+            const mode = document.querySelector('input[name="alignMode"]:checked').value;
+            await fetch('/api/settings', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({alignMode: mode}) });
+        }
+
+        async function saveAlignment() {
+            const key = document.getElementById('melodySelect').value;
+            const category = document.getElementById('catSelect').value;
+            
+            // If debug mode, we don't save to the main file, or maybe we do?
+            // For now, let's allow saving, but user must be careful if in debug mode.
+            // Better: only save if NOT debug.
+            if(category === 'debug') { alert("Cannot save in Debug mode. Copy parameters manually."); return; }
+
+            const data = { category: category, key: key, offset: midiOffset, speed: midiStretch };
+            const btn = document.getElementById('btnSave');
+            const originalText = btn.innerText;
+            btn.innerText = "Saving...";
+            
+            try {
+                const res = await fetch('/api/save_alignment', {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                
+                if (res.ok) {
+                    btn.innerText = "Saved!";
+                    manualAlign[key] = { offset: midiOffset, speed: midiStretch };
+                    document.getElementById('savedBadge').style.display = "inline";
+                    
+                    // Auto-Advance
+                    setTimeout(() => {
+                        const sel = document.getElementById('melodySelect');
+                        if(sel.selectedIndex < sel.options.length - 1) {
+                            sel.selectedIndex++; 
+                            loadSong(); 
+                            sel.focus(); 
+                        }
+                    }, 500); 
+                }
+            } catch(e) { btn.innerText = "Error"; console.error(e); }
+            setTimeout(() => btn.innerText = originalText, 1000);
+        }
+
+        function getDtwTime(midiTime) {
+            const cat = document.getElementById('catSelect').value;
+            // For debug mode, key is handled differently
+            let key = document.getElementById('melodySelect').value;
+            
+            if(cat === 'debug') {
+                const parts = key.split('|');
+                if(parts.length >= 3) key = parts[2]; // key is 3rd part
+            }
+
+            if (!dtwAlign[key] || !dtwAlign[key].points) return midiTime;
+            const pts = dtwAlign[key].points; 
+            for(let i=0; i<pts.length-1; i++) {
+                const m1 = pts[i][0], a1 = pts[i][1];
+                const m2 = pts[i+1][0], a2 = pts[i+1][1];
+                if (midiTime >= m1 && midiTime <= m2) {
+                    const pct = (midiTime - m1) / (m2 - m1 || 0.0001);
+                    return a1 + (a2 - a1) * pct;
+                }
+            }
+            if (midiTime < pts[0][0]) return midiTime + (pts[0][1] - pts[0][0]);
+            return midiTime + (pts[pts.length-1][1] - pts[pts.length-1][0]);
+        }
+
+        function scheduleMidi() {
+            Tone.Transport.cancel();
+            if (!currentMidi) return;
+            const mode = document.querySelector('input[name="alignMode"]:checked').value;
+            const firstNoteTime = getFirstNoteTime();
+
+            currentMidi.tracks.forEach(track => {
+                track.notes.forEach(note => {
+                    let startTime;
+                    if (mode === 'dtw') {
+                        // FIXED: Pass absolute note time (no normalization)
+                        startTime = getDtwTime(note.time); 
+                    } else {
+                        startTime = ((note.time - firstNoteTime) * midiStretch) + midiOffset;
+                    }
+                    if (startTime >= 0) {
+                        Tone.Transport.schedule((time) => {
+                            if (document.getElementById('chkMidi').checked) 
+                                synth.triggerAttackRelease(note.name, note.duration, time, note.velocity);
+                        }, startTime);
+                    }
+                });
+            });
+        }
+
+        function drawMidi() {
+            const container = document.getElementById('piano-roll'); container.innerHTML = '';
+            if (!currentMidi) return;
+            const safeDur = duration || 30; const width = container.clientWidth; const scaleX = width / safeDur; 
+            const mode = document.querySelector('input[name="alignMode"]:checked').value;
+            const firstNoteTime = getFirstNoteTime();
+
+            currentMidi.tracks.forEach(track => {
+                track.notes.forEach(note => {
+                    let startTime, dur;
+                    if (mode === 'dtw') {
+                        // FIXED: Pass absolute note times
+                        startTime = getDtwTime(note.time);
+                        const endTime = getDtwTime(note.time + note.duration);
+                        dur = endTime - startTime;
+                    } else {
+                        startTime = ((note.time - firstNoteTime) * midiStretch) + midiOffset;
+                        dur = note.duration * midiStretch;
+                    }
+
+                    if (startTime < safeDur && (startTime + dur) > 0) {
+                        const el = document.createElement('div'); el.className = 'note';
+                        el.style.left = (startTime * scaleX) + 'px'; el.style.width = Math.max(2, (dur * scaleX)) + 'px';
+                        const topPercent = 100 - ((note.midi - 45) / 50 * 100);
+                        el.style.top = Math.max(0, Math.min(95, topPercent)) + '%';
+                        container.appendChild(el);
+                    }
+                });
+            });
+        }
+
+        // --- Standard Helpers ---
+        function getFirstNoteTime() {
+            let t = Infinity; if(!currentMidi) return 0;
+            currentMidi.tracks.forEach(tr => tr.notes.forEach(n => { if(n.time < t) t = n.time; }));
+            return (t === Infinity) ? 0 : t;
+        }
+        function drawWaveform(data) {
+            const cvs = document.getElementById('waveCanvas'); cvs.width = cvs.parentElement.clientWidth; cvs.height = cvs.parentElement.clientHeight;
+            const ctx = cvs.getContext('2d'); ctx.clearRect(0,0,cvs.width,cvs.height); ctx.fillStyle = "#999"; 
+            const wave = data.waveform; const barWidth = cvs.width / wave.length;
+            for (let i = 0; i < wave.length; i++) {
+                const h = wave[i] * cvs.height * 0.9;
+                ctx.fillRect(i * barWidth, (cvs.height - h)/2, Math.max(1, barWidth), h);
+            }
+        }
+        function drawOnsets() {
+            const cvs = document.getElementById('onsetCanvas'); cvs.width = cvs.parentElement.clientWidth; cvs.height = cvs.parentElement.clientHeight;
+            const ctx = cvs.getContext('2d'); ctx.clearRect(0,0,cvs.width,cvs.height);
+            if (!currentMidi) return;
+            const safeDur = duration || 30; const scaleX = cvs.width / safeDur; const mode = document.querySelector('input[name="alignMode"]:checked').value;
+            const firstNoteTime = getFirstNoteTime();
+            ctx.beginPath(); ctx.strokeStyle = "rgba(255, 0, 0, 0.5)"; ctx.lineWidth = 1;
+            
+            currentMidi.tracks.forEach(track => {
+                track.notes.forEach(note => {
+                    let t;
+                    if (mode === 'dtw') t = getDtwTime(note.time); // FIXED: Absolute time
+                    else t = ((note.time - firstNoteTime) * midiStretch) + midiOffset;
+                    if (t >= 0 && t < safeDur) { const x = t * scaleX; ctx.moveTo(x, 0); ctx.lineTo(x, cvs.height); }
+                });
+            });
+            ctx.stroke();
+        }
+
+        async function updateSongList() {
+            restartFromBeginning();
+            const catSelect = document.getElementById('catSelect');
+            const category = catSelect.value;
+            const sel = document.getElementById('melodySelect');
+            sel.innerHTML = '';
+
+            // --- DEBUG MODE LOGIC ---
+            if (category === 'debug') {
+                try {
+                    const res = await fetch('/api/debug/list');
+                    const files = await res.json();
+                    
+                    if(files.length === 0) sel.add(new Option("(No experiments run)", ""));
+                    
+                    files.forEach(f => {
+                        const val = `${f.filename}|${f.category}|${f.key}`;
+                        sel.add(new Option(f.display, val));
+                    });
+                    
+                    if(files.length > 0) { sel.selectedIndex = 0; loadSong(); }
+                } catch(e) { console.error(e); }
+                return;
+            }
+
+            // --- STANDARD LOGIC ---
+            try { globalAlign = await (await fetch(`/setup/alignment_${category}.json`)).json(); } catch(e) { globalAlign = {}; }
+            try { manualAlign = await (await fetch(`/api/alignment/manual/${category}`)).json(); } catch(e) { manualAlign = {}; }
+            try { dtwAlign = await (await fetch(`/api/alignment/dtw/${category}`)).json(); } catch(e) { dtwAlign = {}; }
+
+            try {
+                const melodies = await (await fetch(`/api/melodies/${category}`)).json();
+                if(melodies.length === 0) sel.add(new Option("(No files)", ""));
+                else melodies.sort().forEach(m => sel.add(new Option(m, m)));
+                sel.selectedIndex = 0; loadSong();
+            } catch(e) { console.error(e); }
+        }
+
+        function applyAlignmentStrategy() {
+            const mode = document.querySelector('input[name="alignMode"]:checked').value;
+            const cat = document.getElementById('catSelect').value;
+            
+            // If Debug, force DTW mode behavior (disable sliders)
+            const isDebug = (cat === 'debug');
+            const isDTW = (mode === 'dtw') || isDebug;
+
+            document.getElementById('offsetRange').disabled = isDTW;
+            document.getElementById('stretchRange').disabled = isDTW;
+
+            if (!isDTW) {
+                const key = document.getElementById('melodySelect').value;
+                if (mode === "global") {
+                    if (globalAlign[key]) { midiOffset = globalAlign[key].calc_offset||0; midiStretch = globalAlign[key].calc_speed||1; }
+                    else { midiOffset = 0.0; midiStretch = 1.0; }
+                }
+                else if (mode === "manual") {
+                    if (manualAlign[key]) { midiOffset = manualAlign[key].offset; midiStretch = manualAlign[key].speed; }
+                    // Fallback to Global if manual doesn't exist
+                    else if (globalAlign[key]) { midiOffset = globalAlign[key].calc_offset||0; midiStretch = globalAlign[key].calc_speed||1; }
+                    else { midiOffset = 0.0; midiStretch = 1.0; }
+                }
+                document.getElementById('offsetRange').value = midiOffset;
+                document.getElementById('stretchRange').value = midiStretch;
+                document.getElementById('offsetVal').innerText = midiOffset.toFixed(3);
+                document.getElementById('stretchVal').innerText = midiStretch.toFixed(3);
+            }
+            
+            scheduleMidi(); drawMidi(); drawOnsets();
+        }
+
+        async function loadSong(forceReload=false) {
+            Tone.Transport.stop(); Tone.Transport.cancel();
+            
+            const catSelect = document.getElementById('catSelect');
+            const sel = document.getElementById('melodySelect');
+            
+            let key, cat, debugFilename = null;
+
+            if (catSelect.value === 'debug') {
+                // Parse "filename|cat|key"
+                const parts = sel.value.split('|');
+                if(parts.length < 3) return;
+                debugFilename = parts[0];
+                cat = parts[1];
+                key = parts[2];
+                
+                // Force DTW mode visually
+                isProgrammaticChange = true;
+                const dtwRadio = document.querySelector('input[name="alignMode"][value="dtw"]');
+                if(dtwRadio) dtwRadio.checked = true;
+                isProgrammaticChange = false;
+                
+                document.getElementById('offsetRange').disabled = true;
+                document.getElementById('stretchRange').disabled = true;
+            } else {
+                key = sel.value;
+                cat = catSelect.value;
+                if(!key || key.startsWith("(")) return;
+            }
+            
+            // Badges
+            document.getElementById('frozenBadge').style.display = (globalAlign[key]?.is_frozen) ? "inline" : "none";
+            document.getElementById('savedBadge').style.display = (manualAlign[key]) ? "inline" : "none";
+            
+            // Load saved settings if they exist to determine mode (Only if NOT DEBUG)
+            if (catSelect.value !== 'debug') {
+                try {
+                    const s = await (await fetch('/api/settings')).json();
+                    isProgrammaticChange = true;
+                    if(s.alignMode) {
+                        const rad = document.querySelector(`input[name="alignMode"][value="${s.alignMode}"]`);
+                        if(rad) rad.checked = true;
+                    }
+                    isProgrammaticChange = false;
+                } catch(e){}
+            }
+
+            // --- FETCH ALIGNMENT (Special logic for debug) ---
+            if (catSelect.value === 'debug') {
+                try {
+                    // Fetch the specific experimental JSON
+                    // dtwAlign is normally a map of { key: data }. 
+                    // We just stuff the debug data into dtwAlign[key] so getDtwTime works.
+                    const res = await fetch(`/api/debug/alignment/${debugFilename}`);
+                    const data = await res.json();
+                    dtwAlign[key] = data; // Assign straight to key
+                    midiOffset = 0; midiStretch = 1;
+                } catch(e) { console.error(e); }
+            } else {
+                // Standard mode pre-calculation for sliders
+                if (manualAlign[key]) { midiOffset = manualAlign[key].offset; midiStretch = manualAlign[key].speed; }
+                else if (globalAlign[key]) { midiOffset = globalAlign[key].calc_offset||0; midiStretch = globalAlign[key].calc_speed||1; }
+                else { midiOffset = 0; midiStretch = 1; }
+                
+                document.getElementById('offsetRange').value = midiOffset;
+                document.getElementById('stretchRange').value = midiStretch;
+                document.getElementById('offsetVal').innerText = midiOffset.toFixed(3);
+                document.getElementById('stretchVal').innerText = midiStretch.toFixed(3);
+            }
+
+            const cb = forceReload ? `?t=${Date.now()}` : '';
+            try {
+                if(player) player.dispose();
+                try { 
+                    const d = await (await fetch(`/api/analysis/${cat}/${key}${cb}`)).json(); 
+                    drawWaveform(d); 
+                } catch(e){ const c=document.getElementById('waveCanvas').getContext('2d'); c.clearRect(0,0,c.canvas.width,c.canvas.height); }
+
+                const audioUrl = `/audio/${cat}/wav/${key}.wav${cb}`;
+                player = new Tone.Player(audioUrl).connect(window.playerPanner);
+                player.sync().start(0);
+                await player.load(audioUrl);
+                duration = player.buffer.duration;
+                document.getElementById('seekBar').max = duration;
+                player.mute = !document.getElementById('chkAudio').checked;
+
+                const buf = await (await fetch(`/midi/${key}.mid${cb}`)).arrayBuffer();
+                currentMidi = new Midi(buf);
+                
+                applyAlignmentStrategy(); 
+                document.getElementById('status').innerText = "Ready" + (debugFilename ? ` (Debug)` : "");
+            } catch(e) { console.error(e); }
+        }
+
+        // --- HELPERS ---
+        window.setQuickOffset = (v) => { midiOffset = v; updateSlider('offsetRange', v); };
+        window.setQuickSpeed = (v) => { midiStretch = v; updateSlider('stretchRange', v); };
+        window.setOffsetToCursor = () => { midiOffset = Tone.Transport.seconds; updateSlider('offsetRange', midiOffset); };
+        function updateSlider(id, v) { 
+            document.getElementById(id).value = v; 
+            if(id=='offsetRange') document.getElementById('offsetVal').innerText=v.toFixed(3);
+            else document.getElementById('stretchVal').innerText=v.toFixed(3);
+            scheduleMidi(); drawMidi(); drawOnsets();
+        }
+        
+        // --- KEYBOARD ---
+        window.addEventListener('keydown', async (e) => {
+            const key = e.key.toLowerCase();
+            const active = document.activeElement;
+            const now = Tone.Transport.seconds;
+            
+            // Trap Escape/Enter/Down to leave slider
+            if((active.id==='offsetRange'||active.id==='stretchRange') && ['arrowdown','enter','escape'].includes(key)) {
+                active.blur(); return;
+            }
+            if(active.tagName === 'INPUT' || (active.tagName === 'SELECT' && ![' ','p'].includes(key))) return;
+            if(key.startsWith('arrow') && active.tagName !== 'INPUT' && active.tagName !== 'SELECT') e.preventDefault();
+
+            switch(key) {
+                case 'p': case ' ': togglePlay(); break;
+                case 's': restartFromBeginning(); break;
+                case '<': document.getElementById('btnSave').click(); break;
+                case 'o': document.getElementById('chkAudio').click(); break;
+                case 'm': document.getElementById('chkMidi').click(); break;
+                case 'a': loopA = now; Tone.Transport.loopStart=now; drawLoop(); break;
+                case 'b': loopB = now; Tone.Transport.loopEnd=now; Tone.Transport.loop=true; if(Tone.Transport.state!=='started')togglePlay(); drawLoop(); break;
+                case 'h': Tone.Transport.loop=false; drawLoop(); break;
+                case 'f': Tone.Transport.loop=!Tone.Transport.loop; drawLoop(); break;
+                case 'c': Tone.Transport.seconds = Math.max(0, loopA - 2); break;
+                case 'd': Tone.Transport.seconds = Tone.Transport.loop ? Math.max(0, loopB - 2) : Math.max(0, duration - 5); break;
+                case 'q': Tone.Transport.seconds = Math.max(0, duration - 5); break;
+                
+                // Scrubbing (if list not focused)
+                case 'arrowleft': 
+                    if(active.tagName!=='SELECT') Tone.Transport.seconds = Math.max(0, now - 2); 
+                    break;
+                case 'arrowright': 
+                    if(active.tagName!=='SELECT') Tone.Transport.seconds = Math.min(duration, now + 2); 
+                    break;
+                
+                // Jump to Sliders (if list not focused)
+                case 'arrowdown': 
+                    if(active.tagName!=='SELECT') document.getElementById('offsetRange').focus(); 
+                    break;
+                case 'arrowup': 
+                    if(active.tagName!=='SELECT') document.getElementById('stretchRange').focus(); 
+                    break;
+            }
+        });
+
+        // --- BOILERPLATE ---
+        async function togglePlay() { 
+            if(Tone.Transport.state==='started') { Tone.Transport.pause(); document.getElementById('btnPlay').innerText="▶ Play (P)"; }
+            else { if(Tone.context.state!=='running')await Tone.start(); Tone.Transport.start(); document.getElementById('btnPlay').innerText="⏸ Pause (P)"; }
+        }
+        function restartFromBeginning() { Tone.Transport.stop(); document.getElementById('btnPlay').innerText="▶ Play (P)"; Tone.Transport.seconds=0; updatePlayheadVisuals(0); }
+        function updatePlayheadVisuals(t) { 
+            const w = document.getElementById('timelineContainer').clientWidth;
+            document.getElementById('playhead').style.left = (t / (duration||30) * w) + "px";
+            document.getElementById('timeDisplay').innerText = `${Math.floor(t/60)}:${Math.floor(t%60).toString().padStart(2,'0')}`;
+        }
+        function animateLoop() { requestAnimationFrame(animateLoop); if(Tone.Transport.state==='started') { updatePlayheadVisuals(Tone.Transport.seconds); document.getElementById('seekBar').value=Tone.Transport.seconds; } }
+        function drawLoop() {
+            const w = document.getElementById('timelineContainer').clientWidth; const px = w/(duration||30);
+            document.getElementById('markerA').style.display = (loopA>0||Tone.Transport.loop)?'block':'none'; document.getElementById('markerA').style.left=loopA*px+'px';
+            document.getElementById('markerB').style.display = (loopB>0&&Tone.Transport.loop)?'block':'none'; document.getElementById('markerB').style.left=loopB*px+'px';
+            document.getElementById('loopRegion').style.display = (loopB>0&&Tone.Transport.loop)?'block':'none'; document.getElementById('loopRegion').style.left=loopA*px+'px'; document.getElementById('loopRegion').style.width=(loopB-loopA)*px+'px';
+        }
+        
+        async function reAnalyzeSong() {
+            const key=document.getElementById('melodySelect').value, cat=document.getElementById('catSelect').value, btn=document.getElementById('btnRefresh');
+            btn.innerText="..."; btn.disabled=true;
+            try { await fetch('/api/reanalyze', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({category:cat, key:key})}); await loadSong(true); } catch(e){}
+            setTimeout(() => { btn.innerText="↻"; btn.disabled=false; }, 1000);
+        }
+
+        init();
+    </script>
+</body>
+</html>
