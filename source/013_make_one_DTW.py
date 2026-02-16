@@ -10,7 +10,7 @@ import sys
 BASE_DIR = os.path.expanduser("~/ai_music")
 DEBUG_DIR = os.path.join(BASE_DIR, "setup", "debug")
 SR = 22050
-HOP_LENGTH = 512
+HOP_LENGTH = 128
 
 # ==========================================
 # --- 🎛️ EXPERIMENTAL PARAMETERS (TWEAK THESE) ---
@@ -18,7 +18,7 @@ HOP_LENGTH = 512
 
 # 1. METRIC: How to compare frames.
 # Options: 'cosine' (recommended for CQT), 'euclidean', 'seuclidean', 'cityblock'
-DTW_METRIC = 'cosine' 
+DTW_METRIC = 'seuclidean' 
 
 # 2. STEP SIZES: Constraints on the path (Slope).
 # Default is np.array([[1, 1], [1, 0], [0, 1]]) which allows vertical/horizontal moves (stops time).
@@ -29,13 +29,13 @@ DTW_STEP_SIZES = np.array([[1, 1], [1, 0], [0, 1]])
 # 3. BAND WIDTH: Global constraint (Sakoe-Chiba).
 # Limits how far the path can stray from the diagonal. 
 # None = No limit. Int = Number of frames (e.g., 100 frames ~= 2.3 seconds)
-# Set this if the AI is jumping to a completely wrong verse.
-DTW_BAND_WIDTH = None 
+# Set this if the AI is jumping to a completely wrong verse. OQ was none
+DTW_BAND_WIDTH = 0.06
 
 # 4. SUBSEQUENCE:
 # True: Allows the MIDI to be a small part of a long Audio.
-# False: Forces the ends to match (Standard DTW).
-DTW_SUBSEQUENCE = True
+# False: Forces the ends to match (Standard DTW). OQ Was True
+DTW_SUBSEQUENCE = False
 
 # 5. BACKTRACK SMOOTHING:
 # Sometimes the raw path is "stair-steppy". This simplifies it.
@@ -80,14 +80,13 @@ def run_experiment(category, key):
         if DTW_SUBSEQUENCE:
             D, wp = librosa.sequence.dtw(X=c_midi, Y=c_rec, metric=DTW_METRIC, 
                                          step_sizes_sigma=DTW_STEP_SIZES, 
-                                         global_constraints=DTW_SUBSEQUENCE)
-                                         #, 
-                                         #band_width=DTW_BAND_WIDTH)
+                                         global_constraints=DTW_SUBSEQUENCE,                                          
+                                         band_rad=DTW_BAND_WIDTH)
         else:
             # Librosa Dtw standard
             D, wp = librosa.sequence.dtw(X=c_midi, Y=c_rec, metric=DTW_METRIC, 
                                          step_sizes_sigma=DTW_STEP_SIZES,
-                                         band_width=DTW_BAND_WIDTH)
+                                         band_rad=DTW_BAND_WIDTH)
 
         # 4. Post-Process Path
         wp = wp[::-1] # Reverse to be [Start -> End]
