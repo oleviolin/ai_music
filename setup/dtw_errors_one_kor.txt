@@ -1,0 +1,2 @@
+pk-bolsje: Avg Deviation 6.72s
+en-dont: Avg Deviation 2.77s

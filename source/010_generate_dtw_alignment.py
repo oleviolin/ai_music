@@ -11,13 +11,14 @@ SETUP_DIR = os.path.join(BASE_DIR, "setup")
 CATEGORIES = ["first", "one_kor", "one_kor_sgl"]
 SR = 22050
 #HOP_LENGTH = 512
+#from 013_make_one_DTW
 HOP_LENGTH = 128
 ERROR_THRESHOLD_SEC = 2.0 
 DTW_METRIC = 'seuclidean' 
 DTW_BAND_WIDTH = 0.06
 OUTPUT_RESOLUTION_SEC = 0.25
 DTW_SUBSEQUENCE = False
-
+DTW_STEP_SIZES = np.array([[1, 1], [1, 0], [0, 1]]) 
 
 
 def load_manual_saves(cat):
