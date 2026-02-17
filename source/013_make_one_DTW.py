@@ -23,14 +23,14 @@ DTW_METRIC = 'seuclidean'
 # 2. STEP SIZES: Constraints on the path (Slope).
 # Default is np.array([[1, 1], [1, 0], [0, 1]]) which allows vertical/horizontal moves (stops time).
 # Try creating a strict diagonal bias to prevent "stuttering" notes.
-# Example Strict: np.array([[1, 1], [2, 1], [1, 2]])
+# Example Strict: np.array([[1, 1], [2, 1], [1, 2]] testet, virker ikke)
 DTW_STEP_SIZES = np.array([[1, 1], [1, 0], [0, 1]]) 
 
 # 3. BAND WIDTH: Global constraint (Sakoe-Chiba).
 # Limits how far the path can stray from the diagonal. 
 # None = No limit. Int = Number of frames (e.g., 100 frames ~= 2.3 seconds)
 # Set this if the AI is jumping to a completely wrong verse. OQ was none
-DTW_BAND_WIDTH = 0.06
+DTW_BAND_WIDTH = 0.12
 
 # 4. SUBSEQUENCE:
 # True: Allows the MIDI to be a small part of a long Audio.
