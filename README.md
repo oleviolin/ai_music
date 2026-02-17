@@ -5,6 +5,7 @@ contains a nodejs player for comparing midi and audio files.
 mddir ai_audio  
 cd ai_audio  
 git clone https://github.com/oleviolin/ai_music
+
 python3 -m venv venv          
 source venv/bin/activate   
 pip install -r requirements.txt   
