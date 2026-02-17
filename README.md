@@ -1,10 +1,10 @@
-# spil_og_find
+# ai_music
 Finds melodies in spillefolk.dk when played  
 contains a nodejs player for comparing midi and audio files.  
 ##Installation##
 mddir ai_audio  
 cd ai_audio  
-git clone https://github.com/oleviolin/spil_og_find  
+git clone https://github.com/oleviolin/ai_music
 python3 -m venv venv          
 source venv/bin/activate   
 pip install -r requirements.txt   
