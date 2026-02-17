@@ -10,8 +10,16 @@ BASE_DIR = os.path.expanduser("~/ai_music")
 SETUP_DIR = os.path.join(BASE_DIR, "setup")
 CATEGORIES = ["first", "one_kor", "one_kor_sgl"]
 SR = 22050
-HOP_LENGTH = 512
+#HOP_LENGTH = 512
+#from 013_make_one_DTW
+HOP_LENGTH = 128
 ERROR_THRESHOLD_SEC = 2.0 
+DTW_METRIC = 'seuclidean' 
+DTW_BAND_WIDTH = 0.06
+OUTPUT_RESOLUTION_SEC = 0.25
+DTW_SUBSEQUENCE = False
+DTW_STEP_SIZES = np.array([[1, 1], [1, 0], [0, 1]]) 
+
 
 def load_manual_saves(cat):
     path = os.path.join(SETUP_DIR, f"alignment_manual_{cat}.json")
@@ -50,7 +58,17 @@ def process_category(cat):
             c_rec = librosa.feature.chroma_cqt(y=y_rec, sr=SR, hop_length=HOP_LENGTH)
             c_midi = librosa.feature.chroma_cqt(y=y_midi, sr=SR, hop_length=HOP_LENGTH)
             
-            D, wp = librosa.sequence.dtw(X=c_midi, Y=c_rec, metric='cosine')
+            #D, wp = librosa.sequence.dtw(X=c_midi, Y=c_rec, metric='cosine')  OQ:Orig
+            if DTW_SUBSEQUENCE:
+                D, wp = librosa.sequence.dtw(X=c_midi, Y=c_rec, metric=DTW_METRIC, 
+                                            step_sizes_sigma=DTW_STEP_SIZES, 
+                                            global_constraints=DTW_SUBSEQUENCE,                                          
+                                            band_rad=DTW_BAND_WIDTH)
+            else:
+                # Librosa Dtw standard
+                D, wp = librosa.sequence.dtw(X=c_midi, Y=c_rec, metric=DTW_METRIC, 
+                                            step_sizes_sigma=DTW_STEP_SIZES,
+                                            band_rad=DTW_BAND_WIDTH)            
             
             wp = wp[::-1] 
             midi_frames = wp[:, 0]

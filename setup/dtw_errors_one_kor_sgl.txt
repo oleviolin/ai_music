@@ -1,2 +1,2 @@
-kr-ida: Avg Deviation 2.56s
-tu-berliner: Avg Deviation 4.62s
+kr-ida: Avg Deviation 2.53s
+tu-berliner: Avg Deviation 2.81s

@@ -5,3 +5,4 @@ dataset_npz
 venv
 node_modules
 manualer
+setup/user_settings.json
